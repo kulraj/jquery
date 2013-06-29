@@ -1,6 +1,6 @@
 $(document).ready(function() {
     var count_hidden, count_alt;
-    $("div.module");
+    $("div.module").addClass("yellow");
 
     $("#myListItem").addClass("green");
     $("#myList li:nth-child(3)");
