@@ -1,12 +1,12 @@
 $(document).ready(function() {
   //1 append 5 new elements to list
   for (i = 0; i < 5; i += 1) {
-    var $new_element = ("<li>new list element " + i + "</li>");
+    var $new_element = ("<li>new list item " + i + "</li>");
     $("#myList").append($new_element);
   }
-  //2 remove odd elements
-  // index starts from 0 so the even numbered text is actually the odd elements
-  $("#myList li:odd").remove();
+  //2 remove odd list items
+  //index starts from 0 so the odd items in text are the even numbered items by index
+  $("#myList li:even").remove();
 
   //3 Add another h2 and another paragraph to the last div.module 
   $("div.module:last").append("<h2>this is a new h2</h2><p> this is a new paragraph</p>");
