@@ -1,4 +1,5 @@
 $(document).ready(function() {
+  var last_div_module, new_last_div_module;
   //1 append 5 new elements to list
   for (i = 0; i < 5; i += 1) {
     var $new_element = ("<li>new list item " + i + "</li>");
