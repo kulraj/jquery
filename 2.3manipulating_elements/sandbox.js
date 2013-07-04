@@ -13,7 +13,7 @@ $(document).ready(function() {
   $("div.module:last").append("<h2>this is a new h2</h2><p> this is a new paragraph</p>");
 
   //4 Add another option to the select element; give the option the value "Wednesday" 
-  $("select").append("<option value='wednesday'>wednesday</option>");
+  $("select[name='day']").append("<option value='wednesday'>wednesday</option>");
 
   //5 Add a new div.module to the page after the last one;
   $last_div_module = $("div.module:last");
