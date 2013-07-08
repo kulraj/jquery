@@ -26,4 +26,7 @@ $(document).ready(function() {
       }
     });
   });
+  // if we want to make the request only once, we can make the ajax call outside the event handler in main
+  // and only do the manipulations on div(which are inside the success function) inside the event handler
+  // and we can remove the submit button inside the ajax call since it needs to be done only once. 
 });
