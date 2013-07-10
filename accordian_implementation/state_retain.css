@@ -1,0 +1,8 @@
+li.dcjq-parent-li a.clicked {
+  color: yellow;
+}
+
+li.dcjq-parent-li a.show-dropdown {
+  background-color: green;
+  display:block;
+}
