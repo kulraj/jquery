@@ -14,6 +14,7 @@ $(function() {
     //remove the last div if clicked
     if ($(this).is(":last-child")) {
       $(this).remove();
+      $div_number -= 1;
     }
   });
 });
