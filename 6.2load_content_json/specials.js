@@ -34,7 +34,8 @@ $(document).ready(function() {
         }
       });
     changed = true;
+    } else {
+      addHtmlToDiv($day_list, $div);
     }
-  addHtmlToDiv($day_list, $div);
   });
 });
