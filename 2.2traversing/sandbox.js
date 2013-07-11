@@ -7,21 +7,23 @@ $(document).ready(function() {
   });
 
   //2 Select the search input text box, then traverse up to the form and add a class to the form.
-  $("label[for='q']").parent().addClass("blue");
+  $("label[for='q']").parent("#search").addClass("blue");
 
   //3 Select the list item inside #myList that has a class of "current" and remove that class from it;
   //add a class of "current" to the next list item.
-  $list_current = $("#myList li[class^='current']").attr("class","");
+  $list_current = $("#myList li[class^='current']");
+  var $list_current_class = $list_current.attr("class");
+  $list_current.removeClass($list_current_class);
   console.log("3: class of " + $list_current.text() + " after class removal: " + $list_current.attr("class"));
   $list_next = $list_current.next("li").attr("class","current");
   console.log("class added to " + $list_next.text() + ": " + $list_next.attr("class"));
 
   //4 Select the select element inside #specials; traverse your way to the submit button.
-  $("#specials select").parent().next().children([type='submit']).addClass("green");
+  $("#specials select").closest("ul").find("input").addClass("green");
 
   //5 Select the first list item in the #slideshow element; add the class "current" to it,
   // and then add a class of "disabled" to its sibling elements.
-  $list_first = $("#slideshow").children().eq(0).addClass("current");
+  $list_first = $("#slideshow li:first").addClass("current");
   console.log("5: class of list item 1: " + $list_first.attr("class"));
   $list_siblings = $list_first.siblings();
   $list_siblings.addClass("disabled");
