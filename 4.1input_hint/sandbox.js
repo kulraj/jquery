@@ -1,10 +1,11 @@
 $(document).ready(function() {
-  var hint_text, search_input, label;
+  var search_input, label;
 
   //1 Set the value of the search input to the text of the label element 
   $search_input = $("input[name='q']");
   $label = $("label[for='q']");
-  $search_input.val($label.text());
+  var $input_hint = $label.text()
+  $search_input.val($input_hint);
 
   //2 Add a class of "hint" to the search input 
   $search_input.addClass("hint");
@@ -16,8 +17,9 @@ $(document).ready(function() {
   //4 Bind a focus event to the search input that removes the hint text and the "hint" class
   $search_input.bind('focus', function() {
     var $this = $(this);
-    hint_text = $this.val();
-    $this.val("");
+    if ($this.val() == $input_hint) {
+      $this.val("");
+    }
     $this.removeClass("hint");
     console.log("classes of search input on focus: " + $this.attr("class"));
   });
@@ -26,7 +28,7 @@ $(document).ready(function() {
   $search_input.bind('blur', function() {
     var $this = $(this);
     if ($this.val() === "") {
-      $this.val(hint_text);
+      $this.val($input_hint);
       $this.addClass("hint");
     }
     console.log("classes of search input on blur: " + $this.attr("class"));
