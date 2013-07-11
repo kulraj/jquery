@@ -3,9 +3,9 @@ $(document).ready(function() {
   //1 Create a target div after the headline for each blog post and 
   $("<div></div>").insertAfter($blog_headlines);
   // store a reference to it on the headline element using $.fn.data
-  for (i = 0; i < $blog_headlines.length; i += 1) {
-    $blog_headlines.eq(i).data("target_div", $blog_headlines.eq(i).next());
-  }
+  $.each($blog_headlines, function () {
+    $(this).data("target_div", $(this).next());
+  });
 
   //2 Bind a click event to the headline
   $blog_headlines.bind("click", function (event) {
