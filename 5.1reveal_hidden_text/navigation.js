@@ -6,6 +6,6 @@ $(document).ready(function() {
     //2 slide up any other currently showing excerpt paragraphs
     $("#blog p:visible").slideUp(1000);
     //1 slide down the excerpt paragraph related to the clicked link
-    $this.next().slideDown(1000);
+    $this.parent().children("p.excerpt").slideDown(1000);
   });
 });
