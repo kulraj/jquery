@@ -13,7 +13,7 @@ function slideshow(i) {
     $("#which_image li").text($(this).children("img").attr("alt"));
     $(this).delay(2000);
     $(this).fadeOut(function () {
-      i = (i == 3) ? 1 : i + 1;
+      i = (i == $("#slideshow li").length) ? 1 : i + 1;
       slideshow(i);
     });
   });
