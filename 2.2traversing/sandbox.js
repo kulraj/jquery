@@ -11,9 +11,8 @@ $(document).ready(function() {
 
   //3 Select the list item inside #myList that has a class of "current" and remove that class from it;
   //add a class of "current" to the next list item.
-  $list_current = $("#myList li[class^='current']");
-  var $list_current_class = $list_current.attr("class");
-  $list_current.removeClass($list_current_class);
+  $list_current = $("#myList li.current").removeClass("current");
+
   console.log("3: class of " + $list_current.text() + " after class removal: " + $list_current.attr("class"));
   $list_next = $list_current.next("li").attr("class","current");
   console.log("class added to " + $list_next.text() + ": " + $list_next.attr("class"));
