@@ -11,17 +11,19 @@ $(document).ready(function() {
   //that you add to the unordered list element.
   $(".module").each(function() {
     $this = $(this);
-    $("<li>" + $this.children("h2").text() + "</li>").appendTo("#list");
+    $("<li class='" + $this.attr("id") + "'>" + $this.children("h2").text() + "</li>").appendTo("#list");
   });
 
   //4 Bind a click event to the list item
   $("#list li").bind('click', function() {
     var $clicked_list_item = $(this);
     $(this).addClass("current");
+//console.log($(this));
     $(this).siblings().removeClass("current");
     // show the corresponding module and hide others
     $(".module").each(function() {
-      if ($(this).attr("id") == $clicked_list_item.html().toLowerCase()) {
+      // clicked item has 2 classes so we do substring matching
+      if ($clicked_list_item.attr("class").indexOf($(this).attr("id")) == 0) {
         $(this).removeClass("hidden");
       } else {
         $(this).addClass("hidden");
