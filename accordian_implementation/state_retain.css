@@ -1,17 +1,3 @@
 li.dcjq-parent-li a.clicked {
   color: yellow;display:block;
 }
-
-ul.show-dropdown {
-  background-color: green;
-  display:block;
-}
-
-ul.show-dropdown li {
-  background-color: green;
-  display:block;font-size: 20px;
-}
-
-a {
-  color: white;display:block;font-size: 40px;background-color: black;
-}
