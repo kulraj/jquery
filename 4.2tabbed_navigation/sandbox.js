@@ -33,4 +33,5 @@ $(document).ready(function() {
 
   //5 show the first tab
   $(".module:first").removeClass("hidden");
+  $("li.blog").addClass("current");
 });
