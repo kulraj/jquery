@@ -1,8 +1,8 @@
 var product_array, selected_by_attributes = [];
 
-function countTickedCheckboxes() {
+function countTickedCheckboxes(div_id) {
   var count_ticked_checkboxes = 0;
-  $("div input[type='checkbox']").each( function () {
+  $(div_id + " input[type='checkbox']").each( function () {
     if ($(this).attr("checked")) {
       count_ticked_checkboxes += 1;
     }
@@ -35,6 +35,14 @@ function getImageFromJson(current_product) {
   return $("img[src='images/" + current_product.url + "']");
 }
 
+function setDivSelection () {
+  var selected_by_attribute = [];
+  for (var i = 0 ; i < 20; i += 1) {
+    selected_by_attribute[i] = 1;
+  }
+  return selected_by_attribute;
+}
+
 function filterImages() {
   var selected_by_brand = [], selected_by_color = [], i = 0;
 
@@ -43,13 +51,22 @@ function filterImages() {
     selected_by_brand = updateSelectedImages(selected_indexes, selected_by_brand);
   });
 
+  if (countTickedCheckboxes("#brand") == 0) {
+    selected_by_brand = setDivSelection();
+  }
+
   $("#color input").each( function () {
     selected_indexes = filterByAttribute($(this));
     selected_by_colors = updateSelectedImages(selected_indexes, selected_by_color);
   });
 
+  if (countTickedCheckboxes("#color") == 0) {
+    selected_by_color = setDivSelection();
+  }
+
   $(product_array).each( function () {
     image = getImageFromJson($(this)[0]);
+    
     if (selected_by_brand[i] && selected_by_color[i]) {
       image.removeClass("hidden");
       selected_by_attributes[i] = true;
@@ -111,13 +128,5 @@ $(document).ready(function() {
   $checkboxes.bind("click", function () {
     $("img").addClass("hidden");
     filterImages();
-
-    if(countTickedCheckboxes() == 0) {
-      $("img").each(function () {
-        $(this).removeClass("hidden");
-      });
-    setSelection();
-    toggleAvailable();
-    }
   });
 });
