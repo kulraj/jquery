@@ -14,7 +14,7 @@ $(function () {
     if ($clicked_item == $(this).attr("id")) {
       $(this).addClass("clicked");
       // add active class to anchor tag pertaining to parent ul of clicked node
-      $(this).closest("ul").siblings("a").addClass("active");
+      $("#" + $(this).attr("name")).addClass("active");
     }
   });
 });
