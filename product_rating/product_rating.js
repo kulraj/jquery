@@ -17,6 +17,7 @@ $(function () {
   });
 
   $("input").bind("click", function (event) {
-    event.preventDefault();
+    $("td.item, td.rating").removeClass("blue");
+    $("#" + $(this).attr("name") + "," + "#" + $(this).attr("value")).addClass("blue");
   });
 });
