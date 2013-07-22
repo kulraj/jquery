@@ -35,7 +35,7 @@ function getImageFromJson(current_product) {
   return $("img[src='images/" + current_product.url + "']");
 }
 
-function setDivSelection () {
+function setArraySelection () {
   var selected_by_attribute = [];
   for (var i = 0 ; i < 20; i += 1) {
     selected_by_attribute[i] = 1;
@@ -43,26 +43,22 @@ function setDivSelection () {
   return selected_by_attribute;
 }
 
+function selectByAttribute(div_id, selected) {
+  $(div_id + " input").each( function () {
+    selected_indexes = filterByAttribute($(this));
+    selected = updateSelectedImages(selected_indexes, selected);
+  });
+
+  if (countTickedCheckboxes(div_id) == 0) {
+    selected = setArraySelection();
+  }
+  return selected;
+}
+
 function filterImages() {
   var selected_by_brand = [], selected_by_color = [], i = 0;
-
-  $("#brand input").each( function () {
-    selected_indexes = filterByAttribute($(this));
-    selected_by_brand = updateSelectedImages(selected_indexes, selected_by_brand);
-  });
-
-  if (countTickedCheckboxes("#brand") == 0) {
-    selected_by_brand = setDivSelection();
-  }
-
-  $("#color input").each( function () {
-    selected_indexes = filterByAttribute($(this));
-    selected_by_colors = updateSelectedImages(selected_indexes, selected_by_color);
-  });
-
-  if (countTickedCheckboxes("#color") == 0) {
-    selected_by_color = setDivSelection();
-  }
+  selected_by_brand = selectByAttribute("#brand", selected_by_brand);
+  selected_by_color = selectByAttribute("#color", selected_by_color);
 
   $(product_array).each( function () {
     image = getImageFromJson($(this)[0]);
@@ -100,18 +96,12 @@ function toggleAvailable() {
   } 
 }
 
-function setSelection() {
-  for (var i = 0 ; i < 20; i += 1) {
-    selected_by_attributes[i] = true;
-  }
-}
-
 $(document).ready(function() {
   var product_string;
   var $checkboxes = $("input[type='checkbox']").attr("checked", false);
   // initially all radio button should be checked and all items should show
   $("#all").attr("checked", true);
-  setSelection();
+  selected_by_attributes = setArraySelection();
 
   $("#toggle input:radio").bind("click", function () {
     toggleAvailable();
