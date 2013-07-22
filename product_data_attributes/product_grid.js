@@ -9,28 +9,37 @@ function countTickedCheckboxes(div_id) {
 }
 
 function filter() {
-  var count_checked_brands = countTickedCheckboxes("#brand"), count_checked_colors = countTickedCheckboxes("#color");
+  var selector_string = "", count_checked_brands, count_checked_colors;
+  count_checked_brands = countTickedCheckboxes("#brand"), count_checked_colors = countTickedCheckboxes("#color");
   $("#brand input").each( function() {
     if ($(this).attr("checked") || count_checked_brands == 0) {
       var brand = $(this).attr("id");
       $("#color input").each( function() {
         if ($(this).attr("checked") || count_checked_colors == 0) {
-          $("div div[data-brand='" + brand + "'][data-color='" + $(this).attr("id") + "']").show();
-        }  
+          selector_string += "#products > div";
+          if (count_checked_brands > 0) {
+            selector_string += "[data-brand='" + brand + "']";
+          }
+          if (count_checked_colors > 0) {
+            selector_string += "[data-color='" + $(this).attr("id") + "']";
+          }
+          if ($("#available").attr("checked")) {
+            selector_string += "[data-sold-out=0]";
+          }
+          selector_string += ",";
+        }
       });
     }
   });
-
-  if ($("#available").attr("checked")) {
-    $("div div[data-sold-out=1]").hide();
-  }
+  console.log(selector_string);
+  $(selector_string).show();
 }
 
 $(document).ready(function() {
   $("input[type='checkbox']").attr("checked", false);
   $("#all").attr("checked", true);
-  $("div input").click(function() {
-    $("div div").hide();
+  $("div > input").click(function() {
+    $("#products > div").hide();
     filter();
   });
 });
