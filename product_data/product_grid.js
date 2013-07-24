@@ -14,7 +14,7 @@ function filterByAttribute(checkbox) {
   var selected_indexes = [];
   if (checkbox.attr("checked")) {
     $(product_array).each( function () {
-      if ($(this)[0][checkbox.attr("class")] == checkbox.attr("id")) {
+      if (this[checkbox.attr("class")] == checkbox.attr("id")) {
         selected_indexes.push(true);
       } else {
         selected_indexes.push(false);
@@ -25,7 +25,7 @@ function filterByAttribute(checkbox) {
 }
 
 function updateSelectedImages(selected_indexes, selected_by_attribute) {
-  for (var i = 0 ; i < 20; i += 1) {
+  for (var i = 0 ; i < product_array.length; i += 1) {
       selected_by_attribute[i] |= selected_indexes[i];
     }
   return selected_by_attribute;
@@ -37,7 +37,7 @@ function getImageFromJson(current_product) {
 
 function setArraySelection () {
   var selected_by_attribute = [];
-  for (var i = 0 ; i < 20; i += 1) {
+  for (var i = 0 ; i < product_array.length; i += 1) {
     selected_by_attribute[i] = 1;
   }
   return selected_by_attribute;
@@ -61,7 +61,7 @@ function filterImages() {
   selected_by_color = selectByAttribute("#color", selected_by_color);
 
   $(product_array).each( function () {
-    image = getImageFromJson($(this)[0]);
+    image = getImageFromJson(this);
     
     if (selected_by_brand[i] && selected_by_color[i]) {
       image.removeClass("hidden");
@@ -78,7 +78,7 @@ function toggleAvailable() {
   var current_radio_button = $("#toggle input:checked"), i = 0;
   if (current_radio_button.val() == "available") {
     $(product_array).each( function() {
-      var image = getImageFromJson($(this)[0]);
+      var image = getImageFromJson(this);
       //hide items if sold out
       if ($(this)[0].sold_out == 1) {
         image.addClass("hidden");
@@ -86,9 +86,9 @@ function toggleAvailable() {
     });
   } else {
     $(product_array).each( function() {
-      var image = getImageFromJson($(this)[0]);
+      var image = getImageFromJson(this);
       //show hidden items filtered by attribute selectors
-      if ($(this)[0].sold_out == 1 && selected_by_attributes[i]) {
+      if (this.sold_out == 1 && selected_by_attributes[i]) {
         image.removeClass("hidden");
       }
       i += 1;
@@ -101,19 +101,20 @@ $(document).ready(function() {
   var $checkboxes = $("input[type='checkbox']").attr("checked", false);
   // initially all radio button should be checked and all items should show
   $("#all").attr("checked", true);
-  selected_by_attributes = setArraySelection();
-
-  $("#toggle input:radio").bind("click", function () {
-    toggleAvailable();
-  });
 
   product_string = $.ajax ( {
-    url : "product.json",
+    url : "product_grid.json",
     type : "GET",
     async: false,
     dataType : "json",
   });
   product_array= JSON.parse(product_string.responseText);
+
+  selected_by_attributes = setArraySelection();
+
+  $("#toggle input:radio").bind("click", function () {
+    toggleAvailable();
+  });
 
   $checkboxes.bind("click", function () {
     $("img").addClass("hidden");
