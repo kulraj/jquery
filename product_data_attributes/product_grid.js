@@ -19,16 +19,24 @@ function filter() {
           selector_string += "#products > div";
           if (count_checked_brands > 0) {
             selector_string += "[data-brand='" + brand + "']";
+            
           }
           if (count_checked_colors > 0) {
             selector_string += "[data-color='" + $(this).attr("id") + "']";
+            
           }
           if ($("#available").attr("checked")) {
             selector_string += "[data-sold-out=0]";
           }
           selector_string += ",";
         }
+        if (count_checked_colors == 0) {
+          return false;
+        }
       });
+    }
+    if (count_checked_brands == 0) {
+      return false;
     }
   });
   console.log(selector_string);
