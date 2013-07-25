@@ -1,9 +1,9 @@
-var product_array, selected_by_attributes = [];
+var product_array, filtered_by_other_type = false;
 
 function countTickedCheckboxes(div_id) {
   var count_ticked_checkboxes = 0;
   $(div_id + " input[type='checkbox']").each( function () {
-    if ($(this).attr("checked")) {
+    if ($(this).prop("checked")) {
       count_ticked_checkboxes += 1;
     }
   });
@@ -11,16 +11,14 @@ function countTickedCheckboxes(div_id) {
 }
 
 function filterByAttribute(checkbox) {
-  var selected_indexes = [];
-  if (checkbox.attr("checked")) {
-    $(product_array).each( function () {
-      if (this[checkbox.attr("class")] == checkbox.attr("id")) {
-        selected_indexes.push(true);
-      } else {
-        selected_indexes.push(false);
-      }
-    });
-  }
+  var selected_indexes = [], id = checkbox.filter(":checked").attr("id");
+  $(product_array).each( function () {
+    if (this[checkbox.attr("class")] == id) {
+      selected_indexes.push(true);
+    } else {
+      selected_indexes.push(false);
+    }
+  });
   return selected_indexes;
 }
 
@@ -48,7 +46,6 @@ function selectByAttribute(div_id, selected) {
     selected_indexes = filterByAttribute($(this));
     selected = updateSelectedImages(selected_indexes, selected);
   });
-
   if (countTickedCheckboxes(div_id) == 0) {
     selected = setArraySelection();
   }
@@ -59,64 +56,40 @@ function filterImages() {
   var selected_by_brand = [], selected_by_color = [], i = 0;
   selected_by_brand = selectByAttribute("#brand", selected_by_brand);
   selected_by_color = selectByAttribute("#color", selected_by_color);
-
   $(product_array).each( function () {
     image = getImageFromJson(this);
-    
     if (selected_by_brand[i] && selected_by_color[i]) {
       image.removeClass("hidden");
-      selected_by_attributes[i] = true;
-    } else {
-      selected_by_attributes[i] = false;
+      // filter by available radio button
+      if ($("#available").prop("checked") && this.sold_out == 1) {
+        image.addClass("hidden");
+      }
     }
     i += 1;
   });
-  toggleAvailable();
-}
-
-function toggleAvailable() {
-  var current_radio_button = $("#toggle input:checked"), i = 0;
-  if (current_radio_button.val() == "available") {
-    $(product_array).each( function() {
-      var image = getImageFromJson(this);
-      //hide items if sold out
-      if ($(this)[0].sold_out == 1) {
-        image.addClass("hidden");
-      }
-    });
-  } else {
-    $(product_array).each( function() {
-      var image = getImageFromJson(this);
-      //show hidden items filtered by attribute selectors
-      if (this.sold_out == 1 && selected_by_attributes[i]) {
-        image.removeClass("hidden");
-      }
-      i += 1;
-    });
-  } 
 }
 
 $(document).ready(function() {
   var product_string;
   var $checkboxes = $("input[type='checkbox']").attr("checked", false);
   // initially all radio button should be checked and all items should show
-  $("#all").attr("checked", true);
+  $("#all").prop("checked", true);
 
   product_string = $.ajax ( {
     url : "product_grid.json",
     type : "GET",
     async: false,
     dataType : "json",
-  });
-  product_array= JSON.parse(product_string.responseText);
-
-  selected_by_attributes = setArraySelection();
-
-  $("#toggle input:radio").bind("click", function () {
-    toggleAvailable();
+    success : function (data) {
+      product_array = data;
+    }
   });
 
-  $checkboxes.bind("click", function () {
+  for (var i = 1; i <= product_array.length; i += 1) {
+    $("#products").append("<img src='images/" + i + ".jpg'/>");
+  }
+
+  $("#toggle input:radio, input[type='checkbox']").bind("click", function () {
     $("img").addClass("hidden");
     filterImages();
   });
